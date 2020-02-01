@@ -4,31 +4,38 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Container from "react-bootstrap/Container";
 import Jumbotron from "react-bootstrap/Jumbotron";
-import Passwords from "./components/passwords";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Button from "react-bootstrap/Button";
 
 class App extends Component {
-
-    state = {
-        name: 'Ralph',
-        items: []
-    };
-
-    componentDidMount() {
-        fetch('http://localhost:8080/pw/test')
-            .then(res => res.json())
-            .then((data) => {
-                this.setState({ items: data })
-            })
-            .catch(console.log)
-    };
 
     render() {
         return (
             <Container className="p-3">
                 <Jumbotron>
-                    <h1 className="header">Welcome to your Vault {this.state.name}</h1>
+                    <h1 className="header text-center">Welcome to your Password Manager</h1>
                 </Jumbotron>
-                <Passwords passwords={this.state.items}/>
+                <Row>
+                    <Col>
+                        <p className="text-center">Already have an account?</p>
+                    </Col>
+                    <Col>
+                        <p className="text-center">Don't have an account yet?</p>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Button href="/login" variant="primary" type="button" className="btn-block">
+                            Login
+                        </Button>
+                    </Col>
+                    <Col>
+                        <Button href="/register" variant="primary" type="button" className="btn-block">
+                            Register
+                        </Button>
+                    </Col>
+                </Row>
             </Container>
         )
     };
