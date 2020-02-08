@@ -1,13 +1,18 @@
 import React from "react";
-import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Container from "react-bootstrap/Container";
 
-class FormFooter extends React.Component {
+class UserFooter extends React.Component {
     render() {
         return (
-            <Container fluid="md">
+            <Container className="p-3">
                 <Row>
+                    <Col>
+                        <p className="forgot-password text-left">
+                            Already have an account? <a href="/login">Login</a>
+                        </p>
+                    </Col>
                     <Col>
                         <p className="forgot-password text-left">
                             Don't haven an account? <a href="/register">Register</a>
@@ -24,4 +29,4 @@ class FormFooter extends React.Component {
     }
 }
 
-export default FormFooter;
+export default UserFooter;

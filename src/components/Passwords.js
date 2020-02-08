@@ -2,6 +2,7 @@ import React from "react";
 import Table from "react-bootstrap/Table";
 import PasswordView from "./PasswordView";
 import Container from "react-bootstrap/Container";
+import UserHeader from "./UserHeader";
 
 class Passwords extends React.Component {
     state = {
@@ -21,6 +22,7 @@ class Passwords extends React.Component {
     render() {
         return (
             <Container className="p-3">
+                <UserHeader headerMessage={this.props.headerMessage}/>
                 <Table striped bordered hover>
                     <thead>
                     <tr>
@@ -39,8 +41,8 @@ class Passwords extends React.Component {
     }
 }
 
-function renderPasswordView(domain, username, password) {
-    return <PasswordView domain={domain} username={username} password={password}/>;
+function renderPasswordView(domain, name, password) {
+    return <PasswordView domain={domain} name={name} password={password}/>;
 }
 
 export default Passwords;

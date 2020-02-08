@@ -3,42 +3,93 @@ import React, {Component} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Container from "react-bootstrap/Container";
-import Jumbotron from "react-bootstrap/Jumbotron";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Button from "react-bootstrap/Button";
+import Login from "./components/Login";
+import {Route, Switch} from "react-router-dom";
+import Navbar from "react-bootstrap/Navbar";
+import NavItem from "react-bootstrap/NavItem";
+import NavLink from "react-bootstrap/NavLink";
+import Passwords from "./components/Passwords";
+import Register from "./components/Register";
+import Home from "./components/Home";
 
 class App extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+          jwt: ''
+        };
+
+        this.setJwtToken = this.setJwtToken.bind(this);
+        this.isLoggedIn = this.isLoggedIn.bind(this);
+    }
+
+    setJwtToken(token) {
+        console.log("Setting JWT token: ", token);
+        this.setState({ jwt: token });
+        console.log("Set state to: ", this.state);
+    }
+
+    isLoggedIn() {
+        return this.state.jwt != null && this.state.jwt !== ""
+    }
 
     render() {
+        let login_overview, register_add;
+        if (this.isLoggedIn()) {
+            login_overview = <NavLink href="/overview">Overview</NavLink>;
+            register_add = <NavLink href="/add">Add password</NavLink>;
+        } else {
+            login_overview = <NavLink href="/login">Login</NavLink>;
+            register_add = <NavLink href="/register">Register</NavLink>;
+        }
+
+        console.log("rendering App page with state: ", this.state);
+
         return (
             <Container className="p-3">
-                <Jumbotron>
-                    <h1 className="header text-center">Welcome to your Password Manager</h1>
-                </Jumbotron>
-                <Row>
-                    <Col>
-                        <p className="text-center">Already have an account?</p>
-                    </Col>
-                    <Col>
-                        <p className="text-center">Don't have an account yet?</p>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <Button href="/login" variant="primary" type="button" className="btn-block">
-                            Login
-                        </Button>
-                    </Col>
-                    <Col>
-                        <Button href="/register" variant="primary" type="button" className="btn-block">
-                            Register
-                        </Button>
-                    </Col>
-                </Row>
+                <h1>Your JWT is: {this.state.jwt}</h1>
+                    <Navbar variant="light" expand="md" sticky="top">
+                        <NavItem>
+                            <NavLink href="/">Home</NavLink>
+                        </NavItem>
+                        <NavItem>
+                            {login_overview}
+                        </NavItem>
+                        <NavItem>
+                            {register_add}
+                        </NavItem>
+                    </Navbar>
+
+                    <Switch>
+                        <Route exact path="/">
+                            <Home headerMessage='Welcome to your Vault.'/>
+                        </Route>
+                        <Route path="/overview">
+                            <Passwords headerMessage='View all your Passwords in the Vault.'/>
+                        </Route>
+                        <Route path="/add">
+                            <Passwords headerMessage='Add your Password(s) to the Vault.'/>
+                        </Route>
+                        <Route path="/login">
+                            <Login
+                                setJwtToken={this.setJwtToken}
+                                headerMessage='Please log in to your Vault.'/>
+                        </Route>
+                        <Route path="/register">
+                            <Register
+                                setJwtToken={this.setJwtToken}
+                                headerMessage='Register to get your own Vault.'/>
+                        </Route>
+                    </Switch>
             </Container>
         )
     };
 }
+
+// function isLoggedIn() {
+//     return false
+//     // return this.state.jwt != null && this.state.jwt !== ""
+// }
 
 export default App;
