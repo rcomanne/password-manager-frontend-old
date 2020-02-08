@@ -11,27 +11,26 @@ import NavLink from "react-bootstrap/NavLink";
 import Passwords from "./components/Passwords";
 import Register from "./components/Register";
 import Home from "./components/Home";
+import {getBearer, getRefresh} from "./redux/selectors";
+import {connect} from "react-redux";
 
 class App extends Component {
     constructor(props) {
         super(props);
-
+        console.log("Props: ", props);
         this.state = {
-          jwt: ''
+            bearer: props.bearerToken,
+            refresh: props.refreshToken
         };
 
-        this.setJwtToken = this.setJwtToken.bind(this);
         this.isLoggedIn = this.isLoggedIn.bind(this);
     }
 
-    setJwtToken(token) {
-        console.log("Setting JWT token: ", token);
-        this.setState({ jwt: token });
-        console.log("Set state to: ", this.state);
-    }
-
     isLoggedIn() {
-        return this.state.jwt != null && this.state.jwt !== ""
+        // const token = getBearer(store);
+        // console.log(token);
+        // return token != null && token !== "";
+        return false;
     }
 
     render() {
@@ -73,12 +72,12 @@ class App extends Component {
                         </Route>
                         <Route path="/login">
                             <Login
-                                setJwtToken={this.setJwtToken}
+                                // setJwtToken={this.setJwtToken}
                                 headerMessage='Please log in to your Vault.'/>
                         </Route>
                         <Route path="/register">
                             <Register
-                                setJwtToken={this.setJwtToken}
+                                // setJwtToken={this.setJwtToken}
                                 headerMessage='Register to get your own Vault.'/>
                         </Route>
                     </Switch>
@@ -87,9 +86,11 @@ class App extends Component {
     };
 }
 
-// function isLoggedIn() {
-//     return false
-//     // return this.state.jwt != null && this.state.jwt !== ""
-// }
+const mapStateToProps = state => {
+    const bearerToken = getBearer(state);
+    const refreshToken = getRefresh(state);
+    return { bearerToken, refreshToken };
+};
 
-export default App;
+export default connect(mapStateToProps)(App)
+// export default App;

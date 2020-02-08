@@ -5,6 +5,8 @@ import UserFooter from "./UserFooter";
 import Container from "react-bootstrap/Container";
 import UserHeader from "./UserHeader";
 import Alert from "react-bootstrap/Alert";
+import {setBearer} from "../redux/actions";
+import {connect} from "react-redux";
 
 class Login extends React.Component {
     constructor(props) {
@@ -52,7 +54,8 @@ class Login extends React.Component {
 
             if (token) {
                 // token is present, set in App and return to Overview
-                this.props.setJwtToken(token);
+                // this.props.setJwtToken(token);
+                this.props.setBearer(token)
             } else {
                 // token is NOT present, stay on page and show message
                 this.setState({ alerts: <Alert key="loginAlert" variant="danger">No token received!</Alert> })
@@ -100,4 +103,7 @@ class Login extends React.Component {
     }
 }
 
-export default Login;
+export default connect(
+    null,
+    { setBearer }
+)(Login);
